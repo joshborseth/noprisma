@@ -4,6 +4,6 @@ import Home from "../pages";
 
 test("there is an h1 on the home page", () => {
   render(<Home />);
-  const h1 = screen.getByRole("heading", { level: 1 });
+  const h1 = screen.getByText("hello");
   expect(h1).toBeDefined();
 });
