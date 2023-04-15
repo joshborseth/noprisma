@@ -5,6 +5,17 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Pokemon } from "..";
 
+export async function getStaticPaths() {
+  const res = await fetch(
+    "https://jherr-pokemon.s3.us-west-1.amazonaws.com/index.json"
+  );
+  const pokemon = (await res.json()) as Pokemon[];
+  const paths = pokemon.map((p) => ({
+    params: { id: p.id.toString() },
+  }));
+  return { paths, fallback: false };
+}
+
 const Pokemon: NextPage = () => {
   const {
     query: { id },

@@ -1,27 +1,24 @@
 /* eslint-disable @next/next/no-img-element */
-import { type NextPage } from "next";
 import Head from "next/head";
-import { useEffect } from "react";
-import { useState } from "react";
 export type Pokemon = {
   id: number;
   name: string;
   image: string;
 };
 
-const Home: NextPage = () => {
-  const [pokemon, setPokemon] = useState<Pokemon[] | null>(null);
-  useEffect(() => {
-    const fetchPokemon = async () => {
-      const res = await fetch(
-        "https://jherr-pokemon.s3.us-west-1.amazonaws.com/index.json"
-      );
-      const data = (await res.json()) as Pokemon[];
-      setPokemon(data);
-    };
-    void fetchPokemon();
-  }, []);
+export async function getStaticProps() {
+  const res = await fetch(
+    "https://jherr-pokemon.s3.us-west-1.amazonaws.com/index.json"
+  );
+  const pokemon = (await res.json()) as Pokemon[];
+  return {
+    props: {
+      pokemon,
+    },
+  };
+}
 
+const Home = ({ pokemon }: { pokemon: Pokemon[] }) => {
   return (
     <>
       <Head>
